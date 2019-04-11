@@ -29,8 +29,9 @@ DO NOT MODIFY
 @return boolean;
 */
 exports.isValidXML = xmlString => {
-  let tagStringSpliting = xmlString.match(/[<][^>]*[>]/gi);
   const validateTagRegex = /^<([^<]+)*(?:>(.*)<\/\1>|\/>)/;
+  const tagSplitingRegex = /[<][^>]*[>]/gi;
+  let tagStringSpliting = xmlString.match(tagSplitingRegex);
   let regedString = xmlString.match(validateTagRegex);
 
   // if xml is empty
@@ -53,7 +54,7 @@ exports.isValidXML = xmlString => {
     // check badly ordered tags and
     // check in children nodes has un closed node
     if (
-      !!regedString[2].match(/[<][^>]*[>]/gi) &&
+      !!regedString[2].match(tagSplitingRegex) &&
       !regedString[2].match(validateTagRegex)
     ) {
       return false;
