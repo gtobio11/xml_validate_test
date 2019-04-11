@@ -30,6 +30,7 @@ DO NOT MODIFY
 */
 exports.isValidXML = xmlString => {
   let openTagString = xmlString.match(/[<][^>]*[>]/gi);
+  let regedString = xmlString.match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/);
   if (xmlString.length === 0) {
     return false;
   }
@@ -38,7 +39,16 @@ exports.isValidXML = xmlString => {
   }
   // if (xmlString.match(/[<][^<]*[>]+/))
   // if (openTagString.length === 1) {
-  if (!xmlString.match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/)) return false;
+  if (!regedString) {
+    return false;
+  }
+  if (
+    typeof regedString[2] === "string" &&
+    !!regedString[2].match(/[<][^>]*[>]/gi) &&
+    !regedString[2].match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/)
+  ) {
+    return false;
+  }
   // }
   // if (openTagString.length > 4) {
   //   return false;
