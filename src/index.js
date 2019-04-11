@@ -30,29 +30,43 @@ DO NOT MODIFY
 */
 exports.isValidXML = xmlString => {
   let tagStringSpliting = xmlString.match(/[<][^>]*[>]/gi);
-  const validateTagRegex = /^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/;
+  const validateTagRegex = /^<([^<]+)*(?:>(.*)<\/\1>|\/>)/;
   let regedString = xmlString.match(validateTagRegex);
+
+  // if xml is empty
   if (xmlString.length === 0) {
     return false;
   }
-  if (xmlString.match(/^<[^<->]*</)) {
+
+  // bad tags like <<a></a> (double open ?)
+  if (xmlString.match(/^<[^<>]*</)) {
     return false;
   }
+
+  //
   if (!regedString) {
     return false;
   }
+
+  // checking has children nodes
   if (typeof regedString[2] === "string") {
+    // check badly ordered tags and
+    // check in children nodes has un closed node
     if (
       !!regedString[2].match(/[<][^>]*[>]/gi) &&
       !regedString[2].match(validateTagRegex)
     ) {
       return false;
     }
+
+    // check depth of more than 2
     let secondRegedString = regedString[2].match(validateTagRegex);
     if (!!secondRegedString && !!secondRegedString[2].match(validateTagRegex)) {
       return false;
     }
   }
+
+  // check has same nodes;
   for (let i = 0; i < tagStringSpliting.length; i++) {
     for (let j = i + 1; j < tagStringSpliting.length; j++) {
       if (tagStringSpliting[i] === tagStringSpliting[j]) {
@@ -60,8 +74,6 @@ exports.isValidXML = xmlString => {
       }
     }
   }
-  // if (asd) {
-  // }
+
   return true;
-  // TODO: FILL ME
 };
