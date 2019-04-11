@@ -29,7 +29,11 @@ DO NOT MODIFY
 @return boolean;
 */
 exports.isValidXML = xmlString => {
+  console.log(xmlString);
   if (xmlString.length === 0) {
+    return false;
+  }
+  if (xmlString.match(/[<][^>]*[>]/gi).length > 4) {
     return false;
   }
   return true;
