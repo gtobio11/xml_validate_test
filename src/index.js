@@ -29,13 +29,20 @@ DO NOT MODIFY
 @return boolean;
 */
 exports.isValidXML = xmlString => {
-  console.log(xmlString);
+  let openTagString = xmlString.match(/[<][^>]*[>]/gi);
   if (xmlString.length === 0) {
     return false;
   }
-  if (xmlString.match(/[<][^>]*[>]/gi).length > 4) {
+  if (xmlString.match(/^<[^<->]*</)) {
     return false;
   }
+  // if (xmlString.match(/[<][^<]*[>]+/))
+  // if (openTagString.length === 1) {
+  if (!xmlString.match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/)) return false;
+  // }
+  // if (openTagString.length > 4) {
+  //   return false;
+  // }
   return true;
   // TODO: FILL ME
 };
