@@ -34,12 +34,12 @@ exports.isValidXML = xmlString => {
   let tagStringSpliting = xmlString.match(tagSplitingRegex);
   let regedString = xmlString.match(validateTagRegex);
 
-  // if xml is empty
+  // check empty xml
   if (xmlString.length === 0) {
     return false;
   }
 
-  // bad tags like <<a></a> (double open ?)
+  // check bad tags like <<a></a> (double open ?)
   if (xmlString.match(/^<[^<>]*</)) {
     return false;
   }
