@@ -29,29 +29,38 @@ DO NOT MODIFY
 @return boolean;
 */
 exports.isValidXML = xmlString => {
-  let openTagString = xmlString.match(/[<][^>]*[>]/gi);
-  let regedString = xmlString.match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/);
+  let tagStringSpliting = xmlString.match(/[<][^>]*[>]/gi);
+  const validateTagRegex = /^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/;
+  let regedString = xmlString.match(validateTagRegex);
   if (xmlString.length === 0) {
     return false;
   }
   if (xmlString.match(/^<[^<->]*</)) {
     return false;
   }
-  // if (xmlString.match(/[<][^<]*[>]+/))
-  // if (openTagString.length === 1) {
   if (!regedString) {
     return false;
   }
-  if (
-    typeof regedString[2] === "string" &&
-    !!regedString[2].match(/[<][^>]*[>]/gi) &&
-    !regedString[2].match(/^<([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/)
-  ) {
-    return false;
+  if (typeof regedString[2] === "string") {
+    if (
+      !!regedString[2].match(/[<][^>]*[>]/gi) &&
+      !regedString[2].match(validateTagRegex)
+    ) {
+      return false;
+    }
+    let secondRegedString = regedString[2].match(validateTagRegex);
+    if (!!secondRegedString && !!secondRegedString[2].match(validateTagRegex)) {
+      return false;
+    }
   }
-  // }
-  // if (openTagString.length > 4) {
-  //   return false;
+  for (let i = 0; i < tagStringSpliting.length; i++) {
+    for (let j = i + 1; j < tagStringSpliting.length; j++) {
+      if (tagStringSpliting[i] === tagStringSpliting[j]) {
+        return false;
+      }
+    }
+  }
+  // if (asd) {
   // }
   return true;
   // TODO: FILL ME
