@@ -8,9 +8,18 @@ describe("advanced validator test", () => {
       expect(isValidXML("<a/>")).toBeTruthy();
     });
   });
+
   describe("given invalid xml", () => {
     it("should return false for an xml with open tag different with close tag", () => {
       expect(isValidXML("<a></b>")).toBeFalsy();
+    });
+
+    it("should return false for an xml with an end tag without a start tag", () => {
+      expect(isValidXML("</a>")).toBeFalsy();
+    });
+
+    it("should return false for an xml with an close tag is before open tag", () => {
+      expect(isValidXML("</a><a>")).toBeFalsy();
     });
   });
 });
